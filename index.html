@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="Description" content="Enter your description here" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Matador de Monstro</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row mt-3">
+        <h1>Matador de Monstro</h1>
+      </div>
+    </div>
+    <div class="container" id="app">
+      <div class="row score card mb-3 mt-3">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <h3>Jogador</h3>
+              <div class="progress">
+                <div
+                  class="progress-bar"
+                  :class="[ {'bg-danger': playerLife <= 30}, {'bg-warning': playerLife <= 50} ]"
+                  role="progressbar"
+                  :style="'width:' + playerLife + '%;'"
+                  aria-valuenow="100"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  {{playerLife + '%'}}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h3>Monstro</h3>
+              <div class="progress">
+                <div
+                  class="progress-bar"
+                  :class="[ {'bg-danger': monsterLife <= 30}, {'bg-warning': monsterLife <= 50} ]"
+                  role="progressbar"
+                  :style="'width:' + monsterLife + '%;'"
+                  aria-valuenow="100"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  {{monsterLife + '%'}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row actions card mb-3">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12 d-flex justify-content-center gap-3">
+              <template V-if="!gameStart">
+                <button
+                  class="btn btn-primary btn-lg"
+                  @click="startGame"
+                >
+                  Iniciar Jogo
+                </button>
+              </template>
+
+              <template v-if="gameStart">
+                <button class="btn btn-danger btn-lg" @click="attack(false)">
+                  Atacar
+                </button>
+                <button class="btn btn- btn-lg" @click="attack(true)" >
+                  Ataque Especial
+                </button>
+                <button class="btn btn-success btn-lg" @click="healthAndHurt" >
+                  Curar
+                </button>
+                <button class="btn btn-warning btn-lg" @click="endGame" >
+                  Desistir
+                </button>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Model de Log -->
+
+      <template>
+        <div class="log-Alert" v-if="log.length">
+          <div v-for="log in log">
+            <div
+              class="alert alert-dismissible fade show"
+              :class="log.cls"
+              role="alert"
+            >
+              {{log.text}}
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <!-- Modal para Fim do Jogo -->
+
+      <template v-if="hasResult">
+        <div class="alert alert-danger d-flex align-items-center" role="alert" v-if="playerLife == 0">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+            <div>
+              Você perdeu! 🥺
+            </div>
+        </div>
+
+        <div class="alert alert-success d-flex align-items-center" role="alert" v-if="monsterLife == 0">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+            <div>
+              Você ganhooooou! 🥹🫰
+            </div>
+          </div>
+      </template>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
